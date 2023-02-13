@@ -25,8 +25,7 @@ function launchModal() {
 const modalClose = document.querySelector(".close"); 
 
 // close modal event
-// Listen to the mouse click on the .close element. On click call the "closeModal" method - Ecoute le click de la sourie sur l"élément .close. Au click appel la fonction (méthode) "closeModal"
-// Apply the "none" style on modalbd, which has the .bground class - Applique le syle "none" sur modalbd, qui corespont à l"élement qui à la classe .bground 
+// On click apply the "none" style on modalbd, which has the .bground class - Au click applique la valeur "none" à la propriété display de .bgroud(CSS). 
 modalClose.addEventListener("click", (e) => {modalbg.style.display = "none"}); 
 
 // *** Issue 2
@@ -45,18 +44,18 @@ const checkbox1 = document.querySelector("#checkbox1");
 const submit = document.querySelector("#submit");
 const form = document.querySelector("#form");
 
-// function valdate
-
+// globale validation 
 function validate() {
   if (first.checkValidity() && last.checkValidity() && email.checkValidity() && birthdate.checkValidity() && quantity.checkValidity() &&
-      (validateLocation()) && checkbox1.checked) {
+      validateLocation() && checkbox1.checked) {
       return true;
   } else {
     return false; 
   }
 };
 
-function validateLocation() {
+//validation "radio localisation"
+function validateLocation() { 
   if (location1.checked || location2.checked || location3.checked || location4.checked || location5.checked || location6.checked) {
     return true;
   } else {
@@ -81,9 +80,9 @@ let messagesErrors = [
 
 for(let i = 0; i<divFormData.length; i++) {
   
-  let messageErrors = messagesErrors;                                              // j'insere de tableau "messagesErrors dans la boucle
+  let messagesErrors =   messagesErrors;                                        // Insertion du tableau "messagesErrors" dans la boucle
 
-  if (i < 6) {                                                                     // pour chaque champ de formulaire - qui ne sont pas de type radip donc 
+  if (i < 6) {                                                                     // pour chaque champ de formulaire - qui ne sont pas de type radio donc. 
     divFormData[i].addEventListener("input", (e) => {                              // j'écoute l'évenement imput
       divFormData[i].setAttribute("data-error-visible", !e.target.validity.valid); // l'attribut data-error-visible passa à true si le champ est non valide et rend de message d'erreur visible 
       divFormData[i].setAttribute("data-error", messageErrors[i]);                //  l'attribut data-error prend message d'eereur corespondant
@@ -102,12 +101,13 @@ for(let i = 0; i<divFormData.length; i++) {
 let inputs = document.querySelectorAll("input");
 
 form.addEventListener("submit", (e) =>{
-  e.preventDefault();                                               // à la soumission du fomulaire je met en pause
+  e.preventDefault();                                                             // Stop la soumition du formulaire
   if (validate()) {                                        
     
     thanksModal();
 
-   //* Send form on "close" btn or cross  - Envoi du formulaire sur bouton "fermer" ou croie.
+   //* Send form on "close" btn or cross
+   // Envoi du formulaire sur bouton "fermer" ou croix.
     btnSubmit = addEventListener ("click", (e) => {
     document.forms["form"].submit();
     });
@@ -120,20 +120,21 @@ form.addEventListener("submit", (e) =>{
   };
 }, false);
 
-  //* Setting up thank window - Mise en place de fenêtre de remerciement - je modifie la fenêtre exitante
-function thanksModal() {                                                  //si le formulaire et valide :
-  document.querySelector(".btn-submit").setAttribute("value", "Fermer"); // modifiaction du boutton sumit    
+  //* Setting up thank window - Mise en place de fenêtre de remerciement
+  //* Modification la fenêtre exitante
+function thanksModal() {                                                           //si le formulaire et valide :
+  document.querySelector(".btn-submit").setAttribute("value", "Fermer");           // modifiaction du boutton sumit    
     
-  let formDatas = document.querySelectorAll(".formData");                // effacement de tous les champs du formulaire
+  let formDatas = document.querySelectorAll(".formData");                         // effacement de tous les champs du formulaire
   formDatas.forEach(function(formData) {
     formData.style.display = "none";
   });
 
-  let content = document.querySelector("div.content");                  // mise en forme de la div "content"
+  let content = document.querySelector("div.content");                           // mise en forme de la div "content"
   content.style.marginTop = "5rem";
   content.style.height = "100%";
 
-  let text = document.querySelector("p.text-label");                  // mise en place du message - modification du text initial "Quelle villes ?"
+  let text = document.querySelector("p.text-label");                           // mise en place du message - modification du text initial "Quelle villes ?"
   text.style.textAlign = "center";
   text.style.margin = "34vh 0";
   text.style.fontSize = "2.57rem";
@@ -141,17 +142,20 @@ function thanksModal() {                                                  //si l
 };
 
 //* Form verification if ti's not completed - Vérification du formulaire si non remplie 
+
 function verifCompletForm () {
-  for(let i = 0; i<divFormData.length; i++)
+  for(let i = 0; i<divFormData.length; i++) {
       
-      if (i < 6) {
-        let messageErrors = messagesErrors;
-          divFormData[i].setAttribute("data-error-visible",  !inputs[i].validity.valid);
-          divFormData[i].setAttribute("data-error", messageErrors[i]);
-      
-      if (!validateLocation()) {
-        document.querySelector("#formLocation").setAttribute("data-error-visible", true);
-        document.querySelector("#formLocation").setAttribute("data-error", messageErrors[i])
-      };
+    if (i < 6) {
+      let messageErrors = messagesErrors;
+        divFormData[i].setAttribute("data-error-visible",  !inputs[i].validity.valid);
+        divFormData[i].setAttribute("data-error", messageErrors[i]);
+    }
+
+    else if (!validateLocation()) {
+      document.querySelector("#formLocation").setAttribute("data-error-visible", true);
+      document.querySelector("#formLocation").setAttribute("data-error", messageErrors[i])
     };
+  }; 
 };
+
